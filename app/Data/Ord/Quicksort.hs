@@ -3,13 +3,13 @@ module Data.Ord.Quicksort (quicksort) where
 import Control.Monad ((<=<), when)
 import Control.Monad.ST (ST)
 import Data.Vector.Mutable (STVector)
-import qualified Data.Vector.Mutable as VM
-import qualified Data.Vector as V
 import Control.Monad.Fix (fix)
 import Data.STRef (newSTRef, readSTRef, modifySTRef)
 import Control.Monad.Loops (untilM_, untilJust)
 import Data.Vector.Mutable.Function (withSTVector)
 import Control.Applicative.Tuple (bothA_, bothA)
+import qualified Data.Vector.Mutable as VM
+import qualified Data.Vector as V
 
 quicksort :: Ord a => [a] -> [a]
 quicksort = withSTVector $ fix $ \rec xs ->
