@@ -1,9 +1,13 @@
+{-# LANGUAGE ScopedTypeVariables #-}
 module Main where
 
 import Data.Ord.Quicksort (quicksort)
+import System.Random (randomRIO)
+import Control.Monad (replicateM)
 
 main :: IO ()
-main = print $ quicksort xs
-  where
-    xs :: [Int]
-    xs = [8, 3, 5, 2, 5, 7, 23, 562, 34, 63, 1, 18, 1, 2, 52, 23, 12, 1, 2, 1]
+main = do
+  xs :: [Int] <- replicateM 15 $ randomRIO (0, 15)
+  putStrLn $ "Before: " ++ show xs
+  putStrLn $ "After: "  ++ show (quicksort xs)
+        
