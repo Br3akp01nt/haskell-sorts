@@ -19,11 +19,11 @@ quicksort = withSTVector $ fix $ \rec xs ->
     partition :: Ord a => STVector s a -> ST s (STVector s a, STVector s a)
     partition xs = do
         p      <- pivot xs
-        (l, h) <- bothA newSTRef (-1, VM.length xs)
+        (l, h) <- newSTRef `bothA` (-1, VM.length xs)
         untilJust $ do
             increment l `untilM_` (p <=) <$> (xs `at` l)
             decrement h `untilM_` (p >=) <$> (xs `at` h)
-            (l', h') <- bothA readSTRef (l, h)
+            (l', h') <- readSTRef `bothA` (l, h)
             if l' >= h'
                then pure $ Just  $ VM.splitAt l' xs
                else Nothing     <$ VM.swap xs l' h'
