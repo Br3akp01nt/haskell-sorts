@@ -1,5 +1,3 @@
-{-# LANGUAGE RankNTypes #-}
-
 module Data.Ord.Quicksort (quicksort) where
 
 import Control.Monad ((<=<), when)
@@ -20,17 +18,18 @@ quicksort = withSTVector $ fix $ \rec xs ->
   where
     partition :: Ord a => STVector s a -> ST s (STVector s a, STVector s a)
     partition xs = do
-        p      <- VM.read xs 0
+        p      <- pivot xs
         (l, h) <- bothA newSTRef (-1, VM.length xs)
         untilJust $ do
             increment l `untilM_` (p <=) <$> (xs `at` l)
             decrement h `untilM_` (p >=) <$> (xs `at` h)
             (l', h') <- bothA readSTRef (l, h)
             if l' >= h'
-               then pure $ Just  $ VM.splitAt (h' + 1) xs
+               then pure $ Just  $ VM.splitAt l' xs
                else Nothing     <$ VM.swap xs l' h'
 
     increment = flip modifySTRef (+   1 )
     decrement = flip modifySTRef (+ (-1))
-    at xs = VM.read xs <=< readSTRef
+    at     xs = VM.read xs <=< readSTRef
+    pivot  xs = VM.read xs $ VM.length xs `div` 2
 
