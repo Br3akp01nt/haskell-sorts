@@ -1,5 +1,6 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Data.Ord.Heapsort (heapsort) where
 
@@ -52,9 +53,9 @@ heapsortVector mVec = do
                     when (p' < n') $ swapNodes p x *> rec p
 
     swapGreatestChild :: Node -> ST s Node
-    swapGreatestChild n = do
-        c <- fromJust <$> maxChild n
-        c <$ swapNodes n c
+    swapGreatestChild n = maxChild n >>= \case
+      Nothing -> pure n
+      Just  c -> swapNodes n c $> c
 
     maxChild :: Node -> ST s (Maybe Node)
     maxChild x =
