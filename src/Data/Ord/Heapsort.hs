@@ -11,9 +11,10 @@ import           Control.Monad.ST             (ST)
 import           Control.Monad.Trans.Class    (lift)
 import           Control.Monad.Trans.Maybe    (MaybeT (runMaybeT))
 import           Data.Foldable                (for_, traverse_)
+import           Data.Function                (on)
 import           Data.Functor                 (($>))
 import           Data.List                    (maximumBy, unfoldr)
-import           Data.Maybe                   (catMaybes, isJust, fromMaybe)
+import           Data.Maybe                   (catMaybes, fromMaybe, isJust)
 import           Data.Ord                     (comparing)
 import           Data.Ord.Monad               (comparingM)
 import           Data.Traversable             (for)
@@ -63,7 +64,7 @@ heapsortVector mVec = do
     readNode = VM.read mVec . nodeIndex
 
     swapNodes :: Node -> Node -> ST s ()
-    swapNodes a b = VM.swap mVec (nodeIndex a) (nodeIndex b)
+    swapNodes = VM.swap mVec `on` nodeIndex
 
 data Node = Node
   { nodeIndex  :: Int
