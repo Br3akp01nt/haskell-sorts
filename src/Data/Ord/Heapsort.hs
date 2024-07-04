@@ -13,7 +13,7 @@ import           Control.Monad.Trans.Maybe    (MaybeT (runMaybeT))
 import           Data.Foldable                (for_, traverse_)
 import           Data.Functor                 (($>))
 import           Data.List                    (maximumBy)
-import           Data.Maybe                   (catMaybes, isJust)
+import           Data.Maybe                   (catMaybes, isJust, fromMaybe)
 import           Data.Ord                     (comparing)
 import           Data.Ord.Monad               (comparingM)
 import           Data.Traversable             (for)
@@ -34,9 +34,9 @@ heapsortVector mVec = do
     heapify = for_ nodes siftDown
       where
         n = VM.length mVec
-        nodes = case parent $ Node (n - 1) n of
-                  Nothing         -> []
-                  Just (Node i _) -> (`Node` n) <$> [i, (i - 1) .. 0]
+        nodes = fromMaybe [] $ do
+            Node i _ <- parent $ Node (n - 1) n
+            pure $ (`Node` n) <$> [i, (i - 1) .. 0]
 
     popNode :: Int -> ST s Int
     popNode n = do
