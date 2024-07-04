@@ -48,18 +48,16 @@ heapsortVector mVec = do
     siftDown x = do
         x' <- readNode x
         void $ runMaybeT $ flip fix x $ \rec n -> do
-            c <- greaterChild n 
-            lift $ swapNodes n c
-            rec c
+            (mc, v) <- maxChild n
+            guard $ v > x' 
+            lift $ swapNodes n mc
+            rec mc
 
-    greaterChild :: Node -> MaybeT (ST s) Node
-    greaterChild x = do
-        x' <- lift $ readNode x
+    maxChild :: Node -> MaybeT (ST s) (Node, a)
+    maxChild x = do
         cs <- lift $ for (children x) $ \c -> (c,) <$> readNode c
         guard $ not $ null cs
-        let maxChild = maximumBy (comparing snd) cs
-        guard $ snd maxChild > x' 
-        pure $ fst maxChild
+        pure $ maximumBy (comparing snd) cs
 
     readNode :: Node -> ST s a
     readNode = VM.read mVec . nodeIndex
