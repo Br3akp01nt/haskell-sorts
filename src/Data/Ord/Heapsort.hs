@@ -31,11 +31,12 @@ heapsortVector mVec = do
     void $ iterateUntilM (<= 1) popNode (VM.length mVec)
   where
     heapify :: ST s ()
-    heapify = for_ nodes siftDown
+    heapify = for_ parents siftDown
       where
         n = VM.length mVec
-        nodes = flip unfoldr (n - 1) $ \i -> 
-                    guard (i >= 0) $> (Node i n, i - 1)
+        parents = fromMaybe [] $ do
+            Node i _ <- parent (Node (n - 1) n)
+            pure $ (`Node` n) <$> [i, i - 1 .. 0]
 
     popNode :: Int -> ST s Int
     popNode n = do
