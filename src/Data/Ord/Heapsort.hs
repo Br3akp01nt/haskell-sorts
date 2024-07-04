@@ -46,11 +46,11 @@ heapsortVector mVec = do
 
     siftDown :: Node -> ST s ()
     siftDown x = do
-      x' <- readNode x
-      flip fix x $ \rec n -> void $ runMaybeT $ do
-          c <- greaterChild n 
-          c' <- lift $ readNode c
-          lift $ swapNodes n c *> rec c
+        x' <- readNode x
+        void $ runMaybeT $ flip fix x $ \rec n -> do
+            c <- greaterChild n 
+            lift $ swapNodes n c
+            rec c
 
     greaterChild :: Node -> MaybeT (ST s) Node
     greaterChild x = do
