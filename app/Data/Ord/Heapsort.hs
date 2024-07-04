@@ -4,20 +4,18 @@
 
 module Data.Ord.Heapsort (heapsort) where
 
-import Data.Vector.Mutable.Function (withSTVector)
 import Control.Monad.Fix (fix)
 import Control.Monad.Loops (iterateUntilM, maximumByM)
-import qualified Data.Vector.Mutable as VM
-import Data.Vector.Mutable (STVector)
 import Control.Monad.ST (ST)
-import Control.Monad (guard, void, forM_, (>=>), when)
-import Data.Maybe (mapMaybe, isJust, catMaybes, fromJust)
-import Control.Applicative.Tuple (bothA)
-import qualified Data.Vector as V
-import Data.Ord.Monad (comparingM)
-import Data.Foldable (for_, traverse_)
+import Control.Monad (guard, void, (>=>), when)
+import Data.Foldable (for_)
 import Data.Functor (($>))
-import Data.Traversable (for)
+import Data.Maybe (isJust, catMaybes)
+import Data.Ord.Monad (comparingM)
+import Data.Vector.Mutable (STVector)
+import Data.Vector.Mutable.Function (withSTVector)
+import qualified Data.Vector.Mutable as VM
+import qualified Data.Vector as V
 
 heapsort :: forall a. (Show a, Ord a) => [a] -> [a]
 heapsort = withSTVector heapsortVector
@@ -28,7 +26,7 @@ heapsortVector mVec = do
     void $ iterateUntilM (<= 1) popNode (VM.length mVec)
   where
     heapify :: ST s ()
-    heapify = forM_ nodes repairHeap
+    heapify = for_ nodes repairHeap
       where
         n = VM.length mVec
         nodes = case parent $ Node (n - 1) n of
