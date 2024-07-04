@@ -23,6 +23,7 @@ library sort-lib
     default-language: Haskell2010
     exposed-modules:  Data.Ord.Quicksort,
                       Data.Ord.Heapsort,
+                      Data.Ord.Mergesort,
                       Data.Ord.Monad,
                       Data.Vector.Mutable.Function,
                       Control.Applicative.Tuple

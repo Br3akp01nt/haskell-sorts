@@ -17,6 +17,7 @@ import           Test.QuickCheck      (Arbitrary (arbitrary), Property,
                                        isSuccess, label, quickCheckAll,
                                        quickCheckResult, verbose, (===))
 import           Test.QuickCheck.Test (quickCheck)
+import Data.Ord.Mergesort (mergesort)
 
 data SortingAlgorithm a =
   SortingAlgorithm
@@ -26,8 +27,9 @@ data SortingAlgorithm a =
 
 algorithms :: (Show a, Ord a) => [SortingAlgorithm a]
 algorithms = map (uncurry SortingAlgorithm)
-                 [ ("Quicksort" , quicksort)
-                 , ("Heapsort"  ,  heapsort)
+                 [ ("Quicksort"  ,  quicksort)
+                 , ("Heapsort"   ,   heapsort)
+                 , ("Mergesort"  ,  mergesort)
                  ]
 
 prop_sortAlreadySortedIsId :: [Int] -> SortingAlgorithm Int -> Property
