@@ -10,5 +10,5 @@ withSTVector :: (forall s. STVector s a -> ST s ()) -> [a] -> [a]
 withSTVector f xs = runST $ do
     mVec <- V.thaw $ V.fromList xs
     f mVec
-    V.toList <$> V.freeze mVec
+    V.toList <$> V.unsafeFreeze mVec
 
