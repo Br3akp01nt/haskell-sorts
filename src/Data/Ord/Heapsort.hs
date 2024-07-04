@@ -1,6 +1,6 @@
 {-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE TupleSections       #-}
 
 module Data.Ord.Heapsort (heapsort) where
 
@@ -8,19 +8,19 @@ import           Control.Monad                (guard, void, when, (>=>))
 import           Control.Monad.Fix            (fix)
 import           Control.Monad.Loops          (iterateUntilM, maximumByM)
 import           Control.Monad.ST             (ST)
+import           Control.Monad.Trans.Class    (lift)
+import           Control.Monad.Trans.Maybe    (MaybeT (runMaybeT))
 import           Data.Foldable                (for_, traverse_)
 import           Data.Functor                 (($>))
+import           Data.List                    (maximumBy)
 import           Data.Maybe                   (catMaybes, isJust)
+import           Data.Ord                     (comparing)
 import           Data.Ord.Monad               (comparingM)
+import           Data.Traversable             (for)
 import qualified Data.Vector                  as V
 import           Data.Vector.Mutable          (STVector)
 import qualified Data.Vector.Mutable          as VM
 import           Data.Vector.Mutable.Function (withSTVector)
-import Data.List (maximumBy)
-import Data.Ord (comparing)
-import Control.Monad.Trans.Maybe (MaybeT(runMaybeT))
-import Control.Monad.Trans.Class (lift)
-import Data.Traversable (for)
 
 heapsort :: forall a. (Show a, Ord a) => [a] -> [a]
 heapsort = withSTVector heapsortVector
@@ -49,7 +49,7 @@ heapsortVector mVec = do
         x' <- readNode x
         void $ runMaybeT $ flip fix x $ \rec n -> do
             (mc, v) <- maxChild n
-            guard $ v > x' 
+            guard $ v > x'
             lift $ swapNodes n mc
             rec mc
 
@@ -75,6 +75,6 @@ parent (Node i n) = Node j n <$ guard (j >= 0)
   where j = (i - 1) `div` 2
 
 children :: Node -> [Node]
-children (Node i n) = filter ((< n) . nodeIndex) 
+children (Node i n) = filter ((< n) . nodeIndex)
                     $ map (\a -> Node (2 * i + a) n) [1, 2]
 
