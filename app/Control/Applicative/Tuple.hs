@@ -1,7 +1,7 @@
 module Control.Applicative.Tuple (bothA, bothA_) where
 
-import Control.Monad (void)
-import Data.Composition ((.:))
+import           Control.Monad    (void)
+import           Data.Composition ((.:))
 
 bothA_ :: Applicative f => (a -> f b) -> (a, a) -> f ()
 bothA_ = void .: bothA

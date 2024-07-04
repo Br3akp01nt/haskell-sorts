@@ -1,15 +1,15 @@
 module Data.Ord.Quicksort (quicksort) where
 
-import Control.Monad ((<=<), when)
-import Control.Monad.ST (ST)
-import Data.Vector.Mutable (STVector)
-import Control.Monad.Fix (fix)
-import Data.STRef (newSTRef, readSTRef, modifySTRef)
-import Control.Monad.Loops (untilM_, untilJust)
-import Data.Vector.Mutable.Function (withSTVector)
-import Control.Applicative.Tuple (bothA_, bothA)
-import qualified Data.Vector.Mutable as VM
-import qualified Data.Vector as V
+import           Control.Applicative.Tuple    (bothA, bothA_)
+import           Control.Monad                (when, (<=<))
+import           Control.Monad.Fix            (fix)
+import           Control.Monad.Loops          (untilJust, untilM_)
+import           Control.Monad.ST             (ST)
+import           Data.STRef                   (modifySTRef, newSTRef, readSTRef)
+import qualified Data.Vector                  as V
+import           Data.Vector.Mutable          (STVector)
+import qualified Data.Vector.Mutable          as VM
+import           Data.Vector.Mutable.Function (withSTVector)
 
 quicksort :: Ord a => [a] -> [a]
 quicksort = withSTVector $ fix $ \rec xs ->

@@ -1,21 +1,21 @@
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE LambdaCase          #-}
+{-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE LambdaCase #-}
 
 module Data.Ord.Heapsort (heapsort) where
 
-import Control.Monad.Fix (fix)
-import Control.Monad.Loops (iterateUntilM, maximumByM)
-import Control.Monad.ST (ST)
-import Control.Monad (guard, void, (>=>), when)
-import Data.Foldable (for_)
-import Data.Functor (($>))
-import Data.Maybe (isJust, catMaybes)
-import Data.Ord.Monad (comparingM)
-import Data.Vector.Mutable (STVector)
-import Data.Vector.Mutable.Function (withSTVector)
-import qualified Data.Vector.Mutable as VM
-import qualified Data.Vector as V
+import           Control.Monad                (guard, void, when, (>=>))
+import           Control.Monad.Fix            (fix)
+import           Control.Monad.Loops          (iterateUntilM, maximumByM)
+import           Control.Monad.ST             (ST)
+import           Data.Foldable                (for_)
+import           Data.Functor                 (($>))
+import           Data.Maybe                   (catMaybes, isJust)
+import           Data.Ord.Monad               (comparingM)
+import qualified Data.Vector                  as V
+import           Data.Vector.Mutable          (STVector)
+import qualified Data.Vector.Mutable          as VM
+import           Data.Vector.Mutable.Function (withSTVector)
 
 heapsort :: forall a. (Show a, Ord a) => [a] -> [a]
 heapsort = withSTVector heapsortVector
@@ -30,7 +30,7 @@ heapsortVector mVec = do
       where
         n = VM.length mVec
         nodes = case parent $ Node (n - 1) n of
-                  Nothing -> []
+                  Nothing         -> []
                   Just (Node i _) -> (`Node` n) <$> [i, (i - 1) .. 0]
 
     popNode :: Int -> ST s Int

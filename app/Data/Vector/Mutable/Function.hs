@@ -2,9 +2,9 @@
 
 module Data.Vector.Mutable.Function (withSTVector) where
 
-import Data.Vector.Mutable (STVector)
-import qualified Data.Vector as V
-import Control.Monad.ST (ST, runST)
+import           Control.Monad.ST    (ST, runST)
+import qualified Data.Vector         as V
+import           Data.Vector.Mutable (STVector)
 
 withSTVector :: (forall s. STVector s a -> ST s ()) -> [a] -> [a]
 withSTVector f xs = runST $ do

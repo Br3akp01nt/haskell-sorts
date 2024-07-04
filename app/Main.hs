@@ -2,10 +2,10 @@
 
 module Main where
 
-import Data.Ord.Quicksort (quicksort)
-import System.Random (randomRIO)
-import Control.Monad (replicateM, forM_)
-import Data.Ord.Heapsort (heapsort)
+import           Control.Monad      (forM_, replicateM)
+import           Data.Ord.Heapsort  (heapsort)
+import           Data.Ord.Quicksort (quicksort)
+import           System.Random      (randomRIO)
 
 main :: IO ()
 main = do
@@ -15,8 +15,8 @@ main = do
       putStrLn $ "Before: " ++ show xs
       putStrLn $ "After:  " ++ show (algorithm xs)
   where
-    algorithms = 
+    algorithms =
       [ ("Quicksort" , quicksort)
       , ("Heapsort"  ,  heapsort)
       ]
-        
+
