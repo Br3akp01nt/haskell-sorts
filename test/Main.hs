@@ -7,6 +7,7 @@ module Main where
 import           Control.Monad        (void)
 import           Data.List            (intercalate)
 import           Data.Ord.Heapsort    (heapsort)
+import           Data.Ord.Mergesort   (mergesort)
 import           Data.Ord.Quicksort   (quicksort)
 import           System.Exit          (exitFailure, exitSuccess)
 import           System.IO            (BufferMode (NoBuffering), hSetBuffering,
@@ -17,7 +18,6 @@ import           Test.QuickCheck      (Arbitrary (arbitrary), Property,
                                        isSuccess, label, quickCheckAll,
                                        quickCheckResult, verbose, (===))
 import           Test.QuickCheck.Test (quickCheck)
-import Data.Ord.Mergesort (mergesort)
 
 data SortingAlgorithm a =
   SortingAlgorithm

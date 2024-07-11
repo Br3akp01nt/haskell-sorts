@@ -1,4 +1,4 @@
-cabal-version:      2.4
+cabal-version:      3.4
 name:               sort
 version:            0.1.0.0
 author:             Br3akp01nt
@@ -9,16 +9,16 @@ executable sort
     main-is:          Main.hs
     default-language: Haskell2010
     hs-source-dirs:   exe
-    build-depends:    base ^>=4.16.4.0,
-                      sort-lib,
+    build-depends:    base ^>=4.19.1.0,
+                      sort:sort-lib,
                       random
 
 library sort-lib
-    build-depends:    base ^>=4.16.4.0,
+    build-depends:    base ^>=4.19.1.0,
                       vector,
                       composition,
                       monad-loops,
-                      transformers
+                      transformers ^>=0.6.1.1
     hs-source-dirs:   src
     default-language: Haskell2010
     exposed-modules:  Data.Ord.Quicksort,
@@ -26,13 +26,14 @@ library sort-lib
                       Data.Ord.Mergesort,
                       Data.Ord.Monad,
                       Data.Vector.Mutable.Function,
+                      Data.Vector.Mutable.Writer,
                       Control.Applicative.Tuple
 
 test-suite test
     type:             exitcode-stdio-1.0
     main-is:          Main.hs
     build-depends:    base, 
-                      sort-lib,
+                      sort:sort-lib,
                       QuickCheck
     hs-source-dirs:   test
     default-language: Haskell2010
