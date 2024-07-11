@@ -26,6 +26,7 @@ library sort-lib
                       Data.Ord.Mergesort,
                       Data.Ord.Monad,
                       Data.Vector.Mutable.Function,
+                      Data.Vector.Mutable.Safe,
                       Data.Vector.Mutable.Writer,
                       Control.Applicative.Tuple
 

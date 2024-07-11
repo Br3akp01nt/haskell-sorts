@@ -18,9 +18,9 @@ import qualified Data.Vector                  as V
 import           Data.Vector.Mutable          (STVector)
 import qualified Data.Vector.Mutable          as VM
 import           Data.Vector.Mutable.Function (withSTVector)
+import qualified Data.Vector.Mutable.Safe     as VS
 import           Data.Vector.Mutable.Writer   (MVectorWriter (..), hoist, into,
                                                tell, tellVector)
-import           Debug.Trace                  (traceM)
 
 mergesort :: (Show a, Ord a) => [a] -> [a]
 mergesort = withSTVector $ fix $ \rec mVec -> void $ runMaybeT $ do
@@ -34,13 +34,10 @@ mergesort = withSTVector $ fix $ \rec mVec -> void $ runMaybeT $ do
   where
     merge :: forall s a. (Ord a, Show a) => STVector s a -> STVector s a -> MVectorWriter (ST s) a ()
     merge xs ys = do
-      hoist (bothA head (xs, ys)) >>= \case
+      hoist (bothA VS.head (xs, ys)) >>= \case
         (Nothing, Nothing) -> pure ()
         (Nothing,  Just y) -> tell y *> tellVector (VM.tail ys)
         (Just x , Nothing) -> tell x *> tellVector (VM.tail xs)
         (Just x , Just y ) | x < y     -> tell x *> merge (VM.tail xs) ys
                            | otherwise -> tell y *> merge xs (VM.tail ys)
-
-    head :: STVector s a -> ST s (Maybe a)
-    head = (`VM.readMaybe` 0)
 
