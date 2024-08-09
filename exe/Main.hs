@@ -4,6 +4,7 @@ module Main where
 
 import           Control.Monad      (forM_, replicateM)
 import           Data.Ord.Heapsort  (heapsort)
+import           Data.Ord.Mergesort (mergesort)
 import           Data.Ord.Quicksort (quicksort)
 import           System.Random      (randomRIO)
 
@@ -18,5 +19,6 @@ main = do
     algorithms =
       [ ("Quicksort" , quicksort)
       , ("Heapsort"  ,  heapsort)
+      , ("Mergesort" , mergesort)
       ]
 
