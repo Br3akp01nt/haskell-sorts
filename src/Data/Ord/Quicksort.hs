@@ -34,8 +34,8 @@ quicksortBy c = withSTVector $ fix $ \rec xs ->
                then pure $ Just  $ VM.splitAt l' xs
                else Nothing     <$ VM.swap xs l' h'
 
-    increment = flip modifySTRef (+   1 )
-    decrement = flip modifySTRef (+ (-1))
+    increment = (`modifySTRef` (+   1 ))
+    decrement = (`modifySTRef` (+ (-1)))
     at     xs = VM.read xs <=< readSTRef
     pivot  xs = VM.read xs $ VM.length xs `div` 2
 
