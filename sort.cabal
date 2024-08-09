@@ -28,7 +28,8 @@ library sort-lib
                       Data.Vector.Mutable.Function,
                       Data.Vector.Mutable.Safe,
                       Data.Vector.Mutable.Writer,
-                      Control.Applicative.Tuple
+                      Control.Applicative.Tuple,
+                      Data.Ord.Function
 
 test-suite test
     type:             exitcode-stdio-1.0
