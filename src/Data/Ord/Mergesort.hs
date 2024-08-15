@@ -22,7 +22,7 @@ import qualified Data.Vector.Mutable.Safe     as VS
 import           Data.Vector.Mutable.Writer   (MVectorWriter (..), hoist, into,
                                                tell, tellVector)
 
-mergesort :: (Show a, Ord a) => [a] -> [a]
+mergesort :: Ord a => [a] -> [a]
 mergesort = withSTVector $ fix $ \rec mVec -> void $ runMaybeT $ do
     guard $ VM.length mVec > 1
     let (left, right) = VM.splitAt (VM.length mVec `div` 2) mVec
@@ -32,7 +32,7 @@ mergesort = withSTVector $ fix $ \rec mVec -> void $ runMaybeT $ do
         rec dst $> dst
     void $ lift $ merge leftRes rightRes `into` mVec
   where
-    merge :: forall s a. (Ord a, Show a) => STVector s a -> STVector s a -> MVectorWriter (ST s) a ()
+    merge :: forall s a. Ord a => STVector s a -> STVector s a -> MVectorWriter (ST s) a ()
     merge xs ys = do
       hoist (bothA VS.head (xs, ys)) >>= \case
         (Nothing, Nothing) -> pure ()

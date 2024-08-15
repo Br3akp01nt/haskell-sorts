@@ -23,10 +23,10 @@ import           Data.Vector.Mutable          (STVector)
 import qualified Data.Vector.Mutable          as VM
 import           Data.Vector.Mutable.Function (withSTVector)
 
-heapsort :: forall a. (Show a, Ord a) => [a] -> [a]
+heapsort :: forall a. Ord a => [a] -> [a]
 heapsort = withSTVector heapsortVector
 
-heapsortVector :: forall a s. (Show a, Ord a) => STVector s a -> ST s ()
+heapsortVector :: forall a s. Ord a => STVector s a -> ST s ()
 heapsortVector mVec = do
     heapify
     void $ iterateUntilM (<= 1) popNode (VM.length mVec)

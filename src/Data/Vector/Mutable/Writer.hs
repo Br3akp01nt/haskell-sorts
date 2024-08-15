@@ -36,7 +36,7 @@ instance PrimMonad m => Monad (MVectorWriter m a) where
         Nothing -> pure Nothing
         Just (v', w') -> into (f w') v'
 
-tell :: (PrimMonad m, Show a) => a -> MVectorWriter m a ()
+tell :: PrimMonad m => a -> MVectorWriter m a ()
 tell a = MVectorWriter $ \v -> runMaybeT $ do
       guard $ VM.length v > 0
       VM.write v 0 a
